@@ -37,13 +37,18 @@ export const Todo = () => {
     setCompleteTodos(newCompleteTodos)
     setIncompleteTodos(newIncompleteTodos)
   }
+
   return (
     <>
       <InputTodo
         todoText={todoText}
         onChange={onChangeTodoText}
         onClick={onClickAdd}
+        disabled={incompleteTodos.length >= 5}
       />
+      {incompleteTodos.length >= 5 &&
+      <p style={{color: 'red'}}>登録できるtodo5個までだよ。消化すること。</p>
+      }
       <IncompleteTodos
         todos={incompleteTodos}
         onClickComplete={onClickComplete}
