@@ -3,8 +3,8 @@ import './stylesheets/style.css';
 
 export const Todo = () => {
   const [todoText, setTodoText] = useState('')
-  const [incompleteTodos, setIncompleteTodos] = useState(['未完了', '未完了2'])
-  const [completeTodos, setCompleteTodos] = useState(['完了','完了2'])
+  const [incompleteTodos, setIncompleteTodos] = useState([])
+  const [completeTodos, setCompleteTodos] = useState([])
   const onChangeTodoText = (event) => {
     setTodoText(event.target.value)
   }
@@ -19,6 +19,21 @@ export const Todo = () => {
     newTodos.splice(idx, 1)
     setIncompleteTodos(newTodos)
   }
+  const onClickComplete = (idx) => {
+    const newIncompleteTodos = [...incompleteTodos]
+    newIncompleteTodos.splice(idx, 1)
+    setIncompleteTodos(newIncompleteTodos)
+    const newCompleteTodos = [...completeTodos, incompleteTodos[idx]]
+    setCompleteTodos(newCompleteTodos)
+  }
+  const onClickBack = (idx) => {
+    const newCompleteTodos = [...completeTodos]
+    newCompleteTodos.splice(idx, 1)
+
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[idx]]
+    setCompleteTodos(newCompleteTodos)
+    setIncompleteTodos(newIncompleteTodos)
+  }
   return (
     <>
       <div className="input-area">
@@ -32,7 +47,7 @@ export const Todo = () => {
             return (
               <div key={todo} className='list-row'>
                 <li>{todo}</li>
-                <button>完了</button>
+                <button onClick={() => onClickComplete(index)}>完了</button>
                 <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             )
@@ -43,11 +58,11 @@ export const Todo = () => {
         <p className='title'>完了のTODO</p>
         <ul>
           {
-            completeTodos.map((completeTodo) => {
+            completeTodos.map((completeTodo, index) => {
               return (
                 <div key={completeTodo} className='list-row'>
                   <li>{completeTodo}</li>
-                  <button>戻す</button>
+                  <button onClick={() => onClickBack(index)}>戻す</button>
                 </div>
               )
             })
